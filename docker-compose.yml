@@ -1,0 +1,75 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "mypassword"]
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=mypassword
+    networks:
+      - myNetwork
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    command: >
+      elasticsearch
+      -E logger.level=ERROR    
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - myNetwork
+
+  django_app:
+    build:
+      context: ./django_app
+      dockerfile: ./Dockerfile
+    image: django_app
+    container_name: django_app
+    privileged: true
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=mypassword
+    volumes:
+      - ./django_app:/app
+      - "./data/root:/root"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - myNetwork
+
+  worker:
+    build: ./worker
+    command: python worker.py
+    container_name: worker
+    volumes:
+      - ./worker:/app
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=mypassword 
+    networks:
+      - myNetwork
+
+volumes:
+  es_data:
+
+networks:
+  myNetwork:
+    name: myNetwork
+    driver: bridge

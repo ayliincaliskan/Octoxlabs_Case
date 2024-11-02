@@ -2,12 +2,12 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-import redis
 import json
 from .models import Post, Tag
 from .serializers import PostSerializer, TagSerializer
+from core.helpers import redis_connection
 
-r = redis.Redis(host='redis', port=6379, db=0, password='mypassword')
+r = redis_connection()
 
 class PostView(APIView):
     def get(self, request):

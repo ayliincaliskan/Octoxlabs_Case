@@ -41,6 +41,8 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=mypassword
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
     volumes:
       - ./octoxlabs:/app
       - "./data/root:/root"

@@ -1,4 +1,3 @@
-from core.helpers import redis_connection
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -6,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 
 from django.contrib.auth.models import User
+from core.helpers import redis_connection
 from .serializers import UserSerializer
 import json
 

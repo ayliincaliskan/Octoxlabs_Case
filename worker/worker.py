@@ -2,13 +2,18 @@ import redis
 import json
 from elasticsearch import Elasticsearch
 import threading
-import time
+
+from config import (
+    ELASTICSEARCH_HOST, 
+    ELASTICSEARCH_PORT, 
+    REDIS_HOST, 
+    REDIS_PASSWORD, 
+    REDIS_PORT)
 
 # Redis ve Elasticsearch bağlantıları
-r = redis.Redis(host='redis', port=6379, db=0, password='mypassword')
-es = Elasticsearch(
-            hosts=[{"host": "elasticsearch", "port": 9200}]
-        )
+r = redis.Redis(host=f'{REDIS_HOST}', port=REDIS_PORT, db=0, password=f'{REDIS_PASSWORD}')
+es = Elasticsearch(hosts=[{"host": f'{ELASTICSEARCH_HOST}', "port": ELASTICSEARCH_PORT}])
+
 
 def process_task(task):
     try:

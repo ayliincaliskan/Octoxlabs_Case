@@ -30,19 +30,19 @@ services:
     networks:
       - myNetwork
 
-  django_app:
+  octoxlabs:
     build:
-      context: ./django_app
+      context: ./octoxlabs
       dockerfile: ./Dockerfile
-    image: django_app
-    container_name: django_app
+    image: octoxlabs
+    container_name: octoxlabs
     privileged: true
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=mypassword
     volumes:
-      - ./django_app:/app
+      - ./octoxlabs:/app
       - "./data/root:/root"
     ports:
       - "8000:8000"

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'account',
-    'blog'
+    'blog',
+    'search'
 ]
 
 MIDDLEWARE = [

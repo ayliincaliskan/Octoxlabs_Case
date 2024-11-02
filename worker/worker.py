@@ -6,7 +6,9 @@ import time
 
 # Redis ve Elasticsearch bağlantıları
 r = redis.Redis(host='redis', port=6379, db=0, password='mypassword')
-es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200}])
+es = Elasticsearch(
+            hosts=[{"host": "elasticsearch", "port": 9200}]
+        )
 
 def process_task(task):
     try:

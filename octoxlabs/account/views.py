@@ -1,3 +1,4 @@
+from core.helpers import redis_connection
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -6,6 +7,7 @@ from rest_framework import generics, status
 
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
+import json
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -29,7 +31,15 @@ class CreateUserAPIView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-
+        try:
+            r = redis_connection()
+            task = {
+                "action": "User created",
+                "user": user.username
+            }
+            r.rpush("task_queue", json.dumps(task))
+        except Exception as e:
+            print(f"{e}")
         # Token oluşturma
         refresh = RefreshToken.for_user(user)
         return Response({

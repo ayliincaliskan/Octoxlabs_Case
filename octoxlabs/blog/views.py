@@ -22,8 +22,7 @@ class PostView(APIView):
             try:
                 task = {
                     "action": "Post created",
-                    "post_id": post.id,
-                    "title": post.title,
+                    "post_title": post.title,
                 }
                 r.rpush("task_queue", json.dumps(task))
             except Exception as e:

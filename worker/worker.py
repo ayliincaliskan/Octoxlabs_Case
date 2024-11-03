@@ -10,17 +10,9 @@ from config import (
 
 from elasticsearch import Elasticsearch
 
-r = redis.Redis(
-        host=f'{REDIS_HOST}',
-        port=REDIS_PORT,
-        db=0,
-        password=f'{REDIS_PASSWORD}'
-    )
+r = redis.Redis(host=f'{REDIS_HOST}', port=REDIS_PORT, db=0, password=f'{REDIS_PASSWORD}')
 
-es = Elasticsearch(
-        hosts=[{"host": f'{ELASTICSEARCH_HOST}', 
-                "port": ELASTICSEARCH_PORT}]
-    )
+es = Elasticsearch(hosts=[{"host": f'{ELASTICSEARCH_HOST}', "port": ELASTICSEARCH_PORT}])
 
 
 def process_task(task):

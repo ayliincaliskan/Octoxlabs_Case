@@ -68,9 +68,6 @@ services:
     networks:
       - myNetwork
 
-volumes:
-  es_data:
-
 networks:
   myNetwork:
     name: myNetwork

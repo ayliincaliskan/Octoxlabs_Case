@@ -3,10 +3,9 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 
 from django.contrib.auth.models import User
-from core.helpers import redis_connection
+from core.helpers import create_task, redis_connection
 from .serializers import UserSerializer
 from core.utils import messages
-import json
 
 
 class CreateUserAPIView(generics.CreateAPIView):
@@ -18,12 +17,7 @@ class CreateUserAPIView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         try:
-            r = redis_connection()
-            task = {
-                "action": messages['USER_CREATE'],
-                "user": user.username
-            }
-            r.rpush("task_queue", json.dumps(task))
+            create_task(message=messages['USER_CREATE'], title="user", value=user.username)
         except Exception as e:
             print(f"{e}")
         refresh = RefreshToken.for_user(user)
@@ -41,12 +35,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance):
         try:
-            r = redis_connection()
-            task = {
-                "action": messages['USER_DELETE'],
-                "user": instance.username
-            }
-            r.rpush("task_queue", json.dumps(task))
+            create_task(message=messages['USER_DELETE'], title="user", value=instance.username)
         except Exception as e:
             print(f"{e}")
         instance.delete()

@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
-import redis
 from django.conf import settings
+import redis
 
 
 def redis_connection():

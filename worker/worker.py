@@ -1,8 +1,6 @@
 import redis
 import json
-from elasticsearch import Elasticsearch
 import threading
-
 from config import (
     ELASTICSEARCH_HOST, 
     ELASTICSEARCH_PORT, 
@@ -10,7 +8,8 @@ from config import (
     REDIS_PASSWORD, 
     REDIS_PORT)
 
-# Redis ve Elasticsearch bağlantıları
+from elasticsearch import Elasticsearch
+
 r = redis.Redis(host=f'{REDIS_HOST}', port=REDIS_PORT, db=0, password=f'{REDIS_PASSWORD}')
 es = Elasticsearch(hosts=[{"host": f'{ELASTICSEARCH_HOST}', "port": ELASTICSEARCH_PORT}])
 
@@ -24,7 +23,7 @@ def process_task(task):
 
 def worker():
     while True:
-        _, message = r.blpop("task_queue")  # Kuyruktan mesaj al
+        _, message = r.blpop("task_queue")
         task = json.loads(message)
         thread = threading.Thread(target=process_task, args=(task,))
         thread.start()

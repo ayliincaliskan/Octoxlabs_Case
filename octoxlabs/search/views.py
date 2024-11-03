@@ -1,7 +1,7 @@
-from core.helpers import elasticsearch_connection
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.helpers import elasticsearch_connection
 
 class SearchView(APIView):
     def get(self, request):

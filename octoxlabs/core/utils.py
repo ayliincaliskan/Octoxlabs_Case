@@ -10,5 +10,6 @@ messages = {
     'TAG_UPDATE': 'Tag updated successfully',
     'TAG_ID_REQUIRE': 'Tag ID is required.',
     'USER_CREATE': 'User created successfully.',
+    'USER_DELETE': 'User deleted successfully.',
     'LOGIN_SUCCESS': 'Login successfully.'
 }

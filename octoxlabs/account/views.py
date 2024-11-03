@@ -32,3 +32,26 @@ class CreateUserAPIView(generics.CreateAPIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }, status=status.HTTP_201_CREATED)
+
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
+    def perform_destroy(self, instance):
+        try:
+            r = redis_connection()
+            task = {
+                "action": messages['USER_DELETE'],
+                "user": instance.username
+            }
+            r.rpush("task_queue", json.dumps(task))
+        except Exception as e:
+            print(f"{e}")
+        instance.delete()
+
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

@@ -7,6 +7,7 @@ from rest_framework import generics, status
 from django.contrib.auth.models import User
 from core.helpers import redis_connection
 from .serializers import UserSerializer
+from core.utils import messages
 import json
 
 
@@ -18,7 +19,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         if response.status_code == 200:
             return Response({
                 "token": response.data['access'],
-                "message": "Giriş başarılı!"
+                "message": messages['LOGIN_SUCCESS']
             }, status=status.HTTP_200_OK)
         return response
 
@@ -34,16 +35,15 @@ class CreateUserAPIView(generics.CreateAPIView):
         try:
             r = redis_connection()
             task = {
-                "action": "User created",
+                "action": messages['USER_CREATE'],
                 "user": user.username
             }
             r.rpush("task_queue", json.dumps(task))
         except Exception as e:
             print(f"{e}")
-        # Token oluşturma
         refresh = RefreshToken.for_user(user)
         return Response({
-            'message': 'User created successfully.',
+            'message': messages['USER_CREATE'],
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }, status=status.HTTP_201_CREATED)

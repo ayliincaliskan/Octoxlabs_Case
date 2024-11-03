@@ -2,16 +2,25 @@ import redis
 import json
 import threading
 from config import (
-    ELASTICSEARCH_HOST, 
-    ELASTICSEARCH_PORT, 
-    REDIS_HOST, 
-    REDIS_PASSWORD, 
+    ELASTICSEARCH_HOST,
+    ELASTICSEARCH_PORT,
+    REDIS_HOST,
+    REDIS_PASSWORD,
     REDIS_PORT)
 
 from elasticsearch import Elasticsearch
 
-r = redis.Redis(host=f'{REDIS_HOST}', port=REDIS_PORT, db=0, password=f'{REDIS_PASSWORD}')
-es = Elasticsearch(hosts=[{"host": f'{ELASTICSEARCH_HOST}', "port": ELASTICSEARCH_PORT}])
+r = redis.Redis(
+        host=f'{REDIS_HOST}',
+        port=REDIS_PORT,
+        db=0,
+        password=f'{REDIS_PASSWORD}'
+    )
+
+es = Elasticsearch(
+        hosts=[{"host": f'{ELASTICSEARCH_HOST}', 
+                "port": ELASTICSEARCH_PORT}]
+    )
 
 
 def process_task(task):
@@ -32,4 +41,3 @@ def worker():
 if __name__ == "__main__":
     print("Worker running with multithreading...")
     threading.Thread(target=worker).start()
-

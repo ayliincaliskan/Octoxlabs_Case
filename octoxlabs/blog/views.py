@@ -52,7 +52,7 @@ class PostView(GenericAPIView):
             except Post.DoesNotExist:
                 return Response(messages["POST_NOT_FOUND"], status=status.HTTP_404_NOT_FOUND)
         return Response(messages["POST_ID_REQUIRE"], status=status.HTTP_400_BAD_REQUEST)
-   
+
     def delete(self, request, post_id=None):
         if post_id is not None:
             try:
@@ -62,7 +62,7 @@ class PostView(GenericAPIView):
                     "post_title": post.title,
                 }
                 r.rpush("task_queue", json.dumps(task))
-                post.delete() 
+                post.delete()
                 return Response(messages["POST_DELETE"], status=status.HTTP_204_NO_CONTENT)
             except Post.DoesNotExist:
                 return Response(messages["POST_NOT_FOUND"], status=status.HTTP_404_NOT_FOUND)
@@ -76,7 +76,7 @@ class TagView(GenericAPIView):
         if tag_id:
             return Tag.objects.filter(id=tag_id)
         return Tag.objects.all()
-    
+
     def get(self, request, tag_id=None):
         queryset = self.get_queryset(tag_id)
         serializer = self.get_serializer(queryset, many=True)
@@ -93,7 +93,7 @@ class TagView(GenericAPIView):
             r.rpush("task_queue", json.dumps(task))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def put(self, request, tag_id=None):
         if tag_id is not None:
             try:
@@ -111,7 +111,7 @@ class TagView(GenericAPIView):
             except Tag.DoesNotExist:
                 return Response(messages["TAG_NOT_FOUND"], status=status.HTTP_404_NOT_FOUND)
         return Response(messages["TAG_ID_REQUIRE"], status=status.HTTP_400_BAD_REQUEST)
-   
+
     def delete(self, request, tag_id=None):
         if tag_id is not None:
             try:

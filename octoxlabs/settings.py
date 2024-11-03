@@ -143,7 +143,6 @@ ELASTICSEARCH_HOST = os.getenv("ELASTICSEARCH_HOST")
 ELASTICSEARCH_PORT = os.getenv("ELASTICSEARCH_PORT")
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "AUTH_HEADER_TYPES": ("",),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }

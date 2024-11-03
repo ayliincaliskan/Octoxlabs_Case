@@ -1,5 +1,3 @@
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import generics, status
@@ -9,19 +7,6 @@ from core.helpers import redis_connection
 from .serializers import UserSerializer
 from core.utils import messages
 import json
-
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = TokenObtainPairSerializer
-
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == 200:
-            return Response({
-                "token": response.data['access'],
-                "message": messages['LOGIN_SUCCESS']
-            }, status=status.HTTP_200_OK)
-        return response
 
 
 class CreateUserAPIView(generics.CreateAPIView):

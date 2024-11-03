@@ -1,0 +1,4 @@
+[flake8]
+max-line-length = 79
+ignore = E501, F403
+exclude = venv/, .venv/, __pycache__/, *.pyc, *.pyo, ./venv/lib/python3.9/site-packages/urllib3/util/timeout.py

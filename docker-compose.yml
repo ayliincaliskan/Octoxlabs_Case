@@ -21,8 +21,6 @@ services:
       -E logger.level=ERROR    
     ports:
       - "9200:9200"
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1

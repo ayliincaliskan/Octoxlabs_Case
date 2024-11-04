@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Post, Tag
 from .serializers import PostSerializer, TagSerializer
@@ -10,6 +11,7 @@ from core.utils import messages
 r = redis_connection()
 
 class PostView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self, post_id):
@@ -57,6 +59,7 @@ class PostView(GenericAPIView):
 
 
 class TagView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = TagSerializer
 
     def get_queryset(self, tag_id):

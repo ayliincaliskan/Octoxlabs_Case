@@ -1,14 +1,17 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 from django.contrib.auth.models import User
-from core.helpers import create_task, redis_connection
+from core.helpers import create_task
 from .serializers import UserSerializer
 from core.utils import messages
 
 
 class CreateUserAPIView(generics.CreateAPIView):
+    permission_classes = [AllowAny] 
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -29,6 +32,7 @@ class CreateUserAPIView(generics.CreateAPIView):
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'
@@ -42,5 +46,6 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer

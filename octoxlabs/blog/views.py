@@ -28,7 +28,7 @@ class PostView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             post = serializer.save()
-            create_task(message=messages["POST_CREATE"], title="post_title", value=post.title)
+            create_task(self, message=messages["POST_CREATE"])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -39,7 +39,7 @@ class PostView(GenericAPIView):
                 serializer = self.get_serializer(post, data=request.data)
                 if serializer.is_valid():
                     post = serializer.save()
-                    create_task(message=messages["POST_UPDATE"], title="post_title", value=post.title)
+                    create_task(self, message=messages["POST_UPDATE"])
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             except Post.DoesNotExist:
@@ -50,7 +50,7 @@ class PostView(GenericAPIView):
         if post_id is not None:
             try:
                 post = Post.objects.get(id=post_id)
-                create_task(message=messages["POST_DELETE"], title="post_title", value=post.title)
+                create_task(self, message=messages["POST_DELETE"])
                 post.delete()
                 return Response(messages["POST_DELETE"], status=status.HTTP_204_NO_CONTENT)
             except Post.DoesNotExist:
@@ -76,7 +76,7 @@ class TagView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             tag = serializer.save()
-            create_task(message=messages["TAG_CREATE"], title="tag_name", value=tag.name)
+            create_task(self, message=messages["TAG_CREATE"])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -87,7 +87,7 @@ class TagView(GenericAPIView):
                 serializer = self.get_serializer(tag, data=request.data)
                 if serializer.is_valid():
                     tag = serializer.save()
-                    create_task(message=messages["TAG_UPDATE"], title="tag_name", value=tag.name)
+                    create_task(self, message=messages["TAG_UPDATE"])
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             except Tag.DoesNotExist:
@@ -98,7 +98,7 @@ class TagView(GenericAPIView):
         if tag_id is not None:
             try:
                 tag = Tag.objects.get(id=tag_id)
-                create_task(message=messages["TAG_DELETE"], title="tag_name", value=tag.name)
+                create_task(self, message=messages["TAG_DELETE"])
                 tag.delete() 
                 return Response(messages["TAG_DELETE"], status=status.HTTP_204_NO_CONTENT)
             except Tag.DoesNotExist:

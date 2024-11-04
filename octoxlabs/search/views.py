@@ -14,9 +14,18 @@ class SearchView(APIView):
         page_size = 10
 
         while True:
+            query = {
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"user": f"{self.request.user.username}"}}  # Kullanıcı adı ile eşleşen verileri getir
+                        ]
+                    }
+                }
+            }
             res = es.search(
                 index="logs",
-                body={"query": {"match_all": {}}},
+                body=query,
                 from_=page * page_size,
                 size=page_size
             )

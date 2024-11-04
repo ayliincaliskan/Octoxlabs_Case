@@ -13,10 +13,10 @@ def elasticsearch_connection():
     es = Elasticsearch(hosts=[{"host": f'{settings.ELASTICSEARCH_HOST}', "port": settings.ELASTICSEARCH_PORT}])
     return es
 
-def create_task(message, title, value):
+def create_task(self, message):
     r = redis_connection()
     task = {
         "action": f"{message}",
-        f"{title}": f"{value}"
+        "user": f"{self.request.user.username}"
     }
     r.rpush("task_queue", json.dumps(task))

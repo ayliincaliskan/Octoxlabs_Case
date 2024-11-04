@@ -19,8 +19,9 @@ class CreateUserAPIView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        self.request.user = user
         try:
-            create_task(message=messages['USER_CREATE'], title="user", value=user.username)
+            create_task(self, message=messages['USER_CREATE'])
         except Exception as e:
             print(f"{e}")
         refresh = RefreshToken.for_user(user)
@@ -39,7 +40,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance):
         try:
-            create_task(message=messages['USER_DELETE'], title="user", value=instance.username)
+            create_task(self, message=messages['USER_DELETE'])
         except Exception as e:
             print(f"{e}")
         instance.delete()

@@ -2,8 +2,8 @@
 
 ## Local development
 1. Install Docker.
-2. From the repo's root run: `source tools/docker-development.sh`.
-3. Run initial migrations: `python manage.py migrate`.
+2. From the repo's root run: `source tools/docker-development.sh`
+3. Run initial migrations: `python manage.py migrate`
 
 ## Running tests on local
 To run all tests:
@@ -21,7 +21,7 @@ To run all tests:
 - Redis was used as the queue, and the actions taken were written to - redis.
 - worker service was added, this service took actions from redist and wrote them to elasticsearch.
 - A Post model and Tag model were created. create, update, delete and list functions were written for these models.
-- Unit tests were written for functions
+- Unit tests were written for functions.
 
 ## API Endpoints
 ### Create Account

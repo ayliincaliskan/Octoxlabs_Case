@@ -3,7 +3,7 @@
 ## Local development
 1. Install Docker.
 2. From the repo's root run: `source tools/docker-development.sh`
-3. Run initial migrations: `python manage.py migrate`
+3. Run initial migrations: `python manage.py migrate` (in octoxlabs container)
 
 ## Running tests on local
 To run all tests:
@@ -42,8 +42,38 @@ To run all tests:
     "refresh_token": "your-refresh-token-here"
 }
 ```
+### Refresh Token
+- URL: /api/account/token/refresh/
+- METHOD: POST
+#### Request Body
+```bash
+{
+    "refresh": "your-refresh-token-here"
+}
+```
+#### Response
+```bash
+{
+    "access_token": "your-access-token-here"
+}
+```
+### Verify Token
+- URL: /api/account/token/verify/
+- METHOD: POST
+#### Request Body
+```bash
+{
+    "token": "your-access-token-here"
+}
+```
+#### Response
+```bash
+{
+    "status_code": 200
+}
+```
 ### Login
-- URL: 
+- URL: /api/account/login/
 - METHOD: POST
 #### Request Body
 ```bash
